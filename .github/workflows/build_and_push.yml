@@ -11,10 +11,12 @@ jobs:
     steps:
     # checkout code
     - uses: actions/checkout@v2
-      
+
     # install go  
-    - uses: actions/setup-go@v2
-      
+    - uses: actions/setup-go@v2.0.3
+      with:
+        go-version: '1.14'
+        
     # build tools
     - name: build tarball
       run: |
@@ -22,11 +24,8 @@ jobs:
 
     # upload to release
     - name: upload tarball to release
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-          upload_url: https://uploads.github.com/repos/marshians/cli-tools/releases/25649565/assets{?name,label}
-          asset_path: ./cli-tools-linux.tar.gz
-          asset_name: cli-tools-linux.tar.gz
-          asset_content_type: application/gzip
+      run: |
+        curl --data-binary @cli-tools-linux.tar.gz  \
+          -H "Authorization: token $GITHUB_TOKEN" \
+          -H "Content-Type: application/gzip" \
+          'https://uploads.github.com/repos/marshians/cli-tools/releases/25649565/assets?name=cli-tools-linux.tar.gz'

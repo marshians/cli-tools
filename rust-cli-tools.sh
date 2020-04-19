@@ -1,7 +1,9 @@
 #!/bin/bash
+set -e
 
 # Install rust and the nightly
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+export PATH=$PATH:$HOME/.cargo/bin
 rustup install nightly
 
 # Install our packages
@@ -20,10 +22,12 @@ cp ~/.cargo/bin/funzzy cli-tools-linux/
 cp ~/.cargo/bin/hx cli-tools-linux/
 cp ~/.cargo/bin/exa cli-tools-linux/
 cp ~/.cargo/bin/sd cli-tools-linux/
-cp ~/.cargo/bin/cargo-/rust-cli-tools-linux/
+cp ~/.cargo/bin/cargo-add cli-tools-linux/
+cp ~/.cargo/bin/cargo-rm cli-tools-linux/
+cp ~/.cargo/bin/cargo-upgrade cli-tools-linux/
 cp ~/.cargo/bin/delta cli-tools-linux/
-cp ~/.cargo/bin/wasm-/rust-cli-tools-linux/
-cp ~/.cargo/bin/cargo-/rust-cli-tools-linux/
+cp ~/.cargo/bin/wasm-pack cli-tools-linux/
+cp ~/.cargo/bin/cargo-generate cli-tools-linux/
 cp ~/.cargo/bin/grcov cli-tools-linux/
 cp ~/.cargo/bin/rg cli-tools-linux/
 cp ~/.cargo/bin/procs cli-tools-linux/
