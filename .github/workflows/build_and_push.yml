@@ -29,7 +29,8 @@ jobs:
       run: |
         export BASE_URL="https://api.github.com/repos/marshians/cli-tools/releases"
         export RELEASE_ID=$(curl -s "$BASE_URL/latest"  | jq '.id')
-        curl -s -X DELETE "$BASE_URL/$RELEASE_ID"
+        echo "$BASE_URL/$RELEASE_ID"
+        curl -H "Authorization: token $TOKEN" -s -X DELETE "$BASE_URL/$RELEASE_ID"
 
     - name: create release
       id: create_release
