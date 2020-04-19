@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+
 go get -u github.com/derekparker/delve/cmd/dlv 
 go get -u github.com/icub3d/sysinfo 
 go get -u golang.org/x/tools/cmd/goimports 

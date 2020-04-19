@@ -22,10 +22,32 @@ jobs:
       run: |
         ./release.sh
 
-    # upload to release
-    - name: upload tarball to release
+    # delete our previous release
+    - name: delete release
+      env:
+        TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        curl --data-binary @cli-tools-linux.tar.gz  \
-          -H "Authorization: token $GITHUB_TOKEN" \
-          -H "Content-Type: application/gzip" \
-          'https://uploads.github.com/repos/marshians/cli-tools/releases/25649565/assets?name=cli-tools-linux.tar.gz'
+        export BASE_URL="https://api.github.com/repos/marshians/cli-tools/releases"
+        export RELEASE_ID=$(curl -s "$BASE_URL/latest"  | jq '.id')
+        curl -s -X DELETE "$BASE_URL/$RELEASE_ID"
+
+    - name: create release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: master
+        release_name: master
+        draft: false
+        prerelease: false
+
+    - name: upload tarball
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./cli-tools.tar.gz
+        asset_name: cli-tools.tar.gz
+        asset_content_type: application/gzip
