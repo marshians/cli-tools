@@ -1,0 +1,29 @@
+name: build_and_push
+on:
+  push:
+    branches: [ master ]
+  schedule:
+    - cron: '0 0 * * 0'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    # checkout code
+    - uses: actions/checkout@v2
+
+    # build tools
+    - name: build tarball
+      run: |
+        ./release.sh
+
+    # upload to release
+    - name: upload tarball to release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          upload_url: https://uploads.github.com/repos/marshians/cli-tools/releases/25649565/assets{?name,label}
+          asset_path: ./cli-tools-linux.tar.gz
+          asset_name: cli-tools-linux.tar.gz
+          asset_content_type: application/gzip
