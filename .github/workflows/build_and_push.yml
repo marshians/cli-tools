@@ -11,7 +11,10 @@ jobs:
     steps:
     # checkout code
     - uses: actions/checkout@v2
-
+      
+    # install go  
+    - uses: actions/setup-go@v2
+      
     # build tools
     - name: build tarball
       run: |

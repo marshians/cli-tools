@@ -11,5 +11,5 @@ go get -u github.com/cweill/gotests/...
 go get -u golang.org/x/tools/gopls 
 go get -u github.com/mikefarah/yq
 
-mkdir -p cli-tools
-find $(go env GOPATH/bin) -type f -exec cp {} cli-tools
+mkdir -p cli-tools-linux
+find $(go env GOPATH/bin) -type f -exec cp {} cli-tools-linux \;
