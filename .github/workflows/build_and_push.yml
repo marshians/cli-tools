@@ -5,6 +5,9 @@ on:
   schedule:
     - cron: '0 0 * * 0'
 
+# This job can take more than an hour, so we use a PAT as the token
+# for authentication.
+# See: https://help.github.com/en/actions/configuring-and-managing-workflows/authenticating-with-the-github_token#about-the-github_token-secret 
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -25,7 +28,7 @@ jobs:
     # delete our previous release
     - name: delete release
       env:
-        TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        TOKEN: ${{ secrets.TOKEN }}
       run: |
         export BASE_URL="https://api.github.com/repos/marshians/cli-tools/releases"
         export RELEASE_ID=$(curl -s "$BASE_URL/latest"  | jq '.id')
@@ -36,7 +39,7 @@ jobs:
       id: create_release
       uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
       with:
         tag_name: master
         release_name: master
@@ -46,7 +49,7 @@ jobs:
     - name: upload tarball
       uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./cli-tools.tar.gz
